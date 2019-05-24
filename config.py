@@ -1,8 +1,10 @@
-from configparser import ConfigParser
+import configparser
 
 
 class Config:
-    def config(filename ='database.ini', section = 'postgresql'):
-        parser = ConfigParser()
-        parser.read("mydb")
+    def __init__(self, file):
+        self.config = configparser.ConfigParser()
+        self.config.read(file)
 
+    def get(self, key):
+        return self.config['default'][key]

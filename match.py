@@ -1,41 +1,47 @@
-import psycopg2
 from database import Database
+from datetime import datetime
 
 class Match:
-    def __init__(self, off_name, acc_name, result, off_set_1, acc_set_1, tiebreak, match_date):
-        self.off = off_name
-        self.acc = acc_name
-        self.r = result
-        self.off1 = off_set_1
-        self. acc1 = acc_set_1
-        self.tie = tiebreak
-        self.date = match_date
+    def __init__(self, competitor_name={}):
+        self.data = competitor_name
+        self.db = Database()
+        self.table = 'matches'
 
+    def validate(self, data):
+        pass
 
-    def result(self):
-        result = input("match result : ")
-        result_map = {"win": 1, "lose": 2, "red": 3, "WO": 4, "delay": 5}
-
-        return result_map[result]
-
-    def save(self):
-        """ insert match name into the matches table  """
-
-        conn = Connect.connect_db()
+    def query_comp_name_id(self, query):
         try:
+            query = input("write competitor name : ")
+            self.cur.execute("SELECT id FROM competitors WHERE comp_name = %s", (query,))
+            comp_name_id = self.cur.fetchone()[0]
+            print(comp_name_id)
+            return self.comp_name_id()
+        except TypeError:
+            print("competitor '{}' can't find".format(query))
 
-            # create a new cursor# execute the INSERT statement
-            cur = conn.cursor
-            cur.execute("INSERT INTO matches (off_name, acc_name, result, off_set_1, acc_set_1, tiebreak, match_date ) VALUES (self.off, self.acc, self.r, self.off1, self.acc1, self.tie,  self.date)")
-            # commit the changes to the database
-            conn.commit()
-            # close communication with the database
-            cur.close()
-        except (Exception, psycopg2.DatabaseError) as error:
-            print(error)
-        finally:
-            if conn is not None:
-                conn.close()
+    def result(self, result):
+        result_map = {"win": 1, "lose": 2, "red": 3, "WO": 4, "delay": 5}
+        try:
+            result = input("match result : ")
+            print(result_map[result])
+            return result_map[result]
+        except KeyError:
+            print("chose one of 'win', 'lose', 'red', 'WO', 'delay'")
+
+    def insert_match(self, off_name, acc_name, result, off_set_1, acc_set_1, tiebreak, date):
+        off_name = self.query_comp_name_id(off_name)
+        acc_name = self.query_comp_name_id(acc_name)
+        result = self.result(result)
+        date = datetime.strptime(date, "%Y-%m-%d %H:%M")
+        self.cur.execute("INSERT INTO matches \
+                   (off_name, acc_name, result, off_set_1, acc_net_1, tiebreak, match_date) \
+                   VALUES (%s, %s, %s, %s, %s, %s, %s);",
+                         (off_name, acc_name, result, off_set_1, acc_set_1, tiebreak, date))
 
 
-self.db.insert(data)
+
+    def save(self, data):
+        return self.db.query(data)
+
+
