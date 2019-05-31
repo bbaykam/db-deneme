@@ -8,14 +8,14 @@ class Competitor:
     def validate(self, data):
         pass
 
-    def save(self, data):
-        data = input("Input competitor name; ")
-        data = ("INSERT INTO competitors (comp_name) VALUES ('{}')".format(data))
+    def save(self):
+        name = input("Input competitor name; ")
+        data = ("INSERT INTO competitors (comp_name) VALUES ('{}')".format(name))
         print(data)
         return self.db.query(data)
 
 
 
 
-#player = Competitor()
-#player.save('')
+player = Competitor()
+player.save()
