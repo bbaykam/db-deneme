@@ -1,6 +1,7 @@
 from database import Database
 from datetime import datetime
 
+
 class Match:
     def __init__(self):
 
@@ -27,7 +28,7 @@ class Match:
             print(status_map[status])
             return status_map[status]
         except KeyError:
-            print("chose one of 'ok', 'red'")
+            print("choose one of 'ok', 'red'")
 
     def save_match(self):
         off_name = self.query_comp_name_id()

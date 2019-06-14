@@ -19,12 +19,12 @@ class Database:
         self.cur.execute(query)
         return self.cur.fetchone()[0]
 
-    def insert(self, table, column, data):
-        self.query = ("INSERT INTO {} ({}) VALUES ('{}')".format(table, column, data))
+    def insert(self, table, column=[], data=[]):
+        self.query = ("INSERT INTO {} ({}) VALUES ('{}')".format(table, column.join(','), data.join(',')))
         return self.query
 
     def test(self, table, fields=[]):
-        query = "SELECT {} FROM {};".format(table, fields.join(','))
+        query = ("SELECT {} FROM {};".format(table, fields.join(',')))
         self.cur.execute(query)
         self.cur.fetchone[query][0]
         self.cur.close()
