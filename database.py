@@ -17,7 +17,7 @@ class Database:
 
     def select(self, query):
         self.cur.execute(query)
-        return self.cur.fetchone()[0]
+        return self.cgit ur.fetchone()[0]
 
     def insert(self, table, column=[], data=[]):
         self.query = ("INSERT INTO {} ({}) VALUES ('{}')".format(table, column.join(','), data.join(',')))
