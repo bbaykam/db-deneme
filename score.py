@@ -3,6 +3,7 @@ from datetime import datetime
 from match import Match
 
 
+
 class Score:
     def __init__(self):
         self.db = Database()
@@ -29,8 +30,9 @@ class Score:
             off_name = self.mh.query_comp_name_id()
             acc_name = self.mh.query_comp_name_id()
             query = ("SELECT id FROM matches \
-            WHERE matches.off_name = {} and matches.acc_name = {} ORDER BY matches.match_date DESC LIMIT 1"\
-                     .format(off_name, acc_name))
+                        WHERE matches.off_name = {} and matches.acc_name = {} \
+                        ORDER BY matches.match_date DESC LIMIT 1"\
+                            .format(off_name, acc_name))
             query_match_id = self.db.select(query)
             print("match id; {} ".format(query_match_id))
             return self.db.select(query)
@@ -38,24 +40,22 @@ class Score:
             print("Match can't find")
 
     def save_score(self):
-        match = self.query_match_id()
+        player_name = self.mh.query_comp_name_id()
+        match_id = self.query_match_id()
         result = self.result()
-        off_set1 = self.validate()
-        acc_set1 = self.validate()
-        off_set2 = self.validate()
-        acc_set2 = self.validate()
-        off_set3 = self.validate()
-        acc_set3 = self.validate()
+        set1 = self.validate()
+        set2 = self.validate()
+        set3 = self.validate()
         date = input("write match date (format yyyy-mm-dd HH:MM); ")
         date = datetime.strptime(date, "%Y-%m-%d %H:%M")
-        data = ("INSERT INTO scores \
-        (match, result, off_set1, acc_set1, off_set2, acc_set2, off_set3, acc_set3, time) \
-        VALUES ({}, {}, {}, {}, {}, {}, {}, {}, '{}')"\
-                .format(match, result, off_set1, acc_set1, off_set2, acc_set2, off_set3, acc_set3, date))
+        data = ("INSERT INTO score \
+        (player_name, result, set1, set2, set3, match_date, match_id) \
+        VALUES ({}, {}, {}, {}, {}, '{}', {})"\
+                .format(player_name, result, set1, set2, set3, date, match_id))
         return self.db.query(data)
 
 
 match = Score()
 #match.query_match_id()
 #match.validate()
-match.save_score()
+match.save_score()  

@@ -19,6 +19,10 @@ class Database:
         self.cur.execute(query)
         return self.cur.fetchone()[0]
 
+    def select_all(self, query):
+        self.cur.execute(query)
+        return self.cur.fetchall()
+
     def insert(self, table, column=[], data=[]):
         self.query = ("INSERT INTO {} ({}) VALUES ('{}')".format(table, column.join(','), data.join(',')))
         return self.query
