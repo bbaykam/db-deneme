@@ -43,14 +43,16 @@ class Score:
         player_name = self.mh.query_comp_name_id()
         match_id = self.query_match_id()
         result = self.result()
+
         set1 = self.validate()
         set2 = self.validate()
         set3 = self.validate()
+
         date = input("write match date (format yyyy-mm-dd HH:MM); ")
         date = datetime.strptime(date, "%Y-%m-%d %H:%M")
         data = ("INSERT INTO score \
-        (player_name, result, set1, set2, set3, match_date, match_id) \
-        VALUES ({}, {}, {}, {}, {}, '{}', {})"\
+                    (player_name, result, set1, set2, set3, match_date, match_id) \
+                    VALUES ({}, {}, {}, {}, {}, '{}', {})"\
                 .format(player_name, result, set1, set2, set3, date, match_id))
         return self.db.query(data)
 
