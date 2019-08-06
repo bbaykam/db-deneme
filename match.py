@@ -44,6 +44,4 @@ class Match:
 
 
 player = Match()
-#player.query_comp_name_id()
-#player.result('win')
-#player.save_match()
+player.save_match()
